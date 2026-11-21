@@ -644,21 +644,65 @@
       );
     }).join('');
 
+    var chapterJumpPillsHtml = data.chapters.map(function (ch) {
+      return (
+        '<button type="button" class="chip" style="padding:0.34rem 0.72rem;font-size:0.79rem;white-space:normal;text-align:left;" data-action="jump-chapter" data-chapter-id="' + escapeHtml(ch.id) + '">' +
+          '<span>' + escapeHtml(ch.icon || '📐') + ' ' + escapeHtml(ch.number) + '</span> ' +
+          '<span>' + fmt(ch.title) + '</span>' +
+        '</button>'
+      );
+    }).join('');
+
     root.innerHTML =
       '<div class="bento-grid">' +
-        '<div class="bento-card bento-hero" style="display:flex;flex-direction:column;justify-content:space-between;gap:18px;">' +
+        '<div class="bento-card bento-hero" style="display:flex;flex-direction:column;justify-content:space-between;gap:16px;">' +
           '<div>' +
-            '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">' +
-              '<span class="pill-badge" style="background:var(--tint-indigo);color:var(--text-indigo);">✨ 2022 개정 공통수학1 · 1학기 중간고사 완벽 대비</span>' +
+            '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">' +
+              '<span class="pill-badge" style="background:var(--tint-indigo);color:var(--text-indigo);white-space:normal;">✨ 2022 개정 공통수학1 · 1학기 중간고사 완벽 대비</span>' +
               '<span class="pill-badge" style="background:var(--tint-amber);color:var(--text-amber);">🏅 Lv.' + lv.level + ' ' + escapeHtml(lv.title) + '</span>' +
             '</div>' +
-            '<h1 style="font-size:clamp(1.38rem, 2.6vw, 1.95rem);margin-bottom:10px;">' + heroTitleText + '</h1>' +
-            '<p style="font-size:0.95rem;color:var(--ink-secondary);line-height:1.68;max-width:64ch;">' +
+            '<h1 style="font-size:clamp(1.38rem, 2.5vw, 1.92rem);margin-bottom:8px;">' + heroTitleText + '</h1>' +
+            '<p style="font-size:0.94rem;color:var(--ink-secondary);line-height:1.66;max-width:64ch;margin-bottom:16px;">' +
               '<strong>파인만 직관 노트</strong>로 원리를 깨치고, <strong>스텔스 빈칸 공식</strong>과 <strong>4단계 논리 체인 퍼즐</strong>로 유도를 손끝에 각인한 뒤, <strong>3-Wave 실전 배틀</strong>과 <strong>라이트너 오답노트</strong>로 내신 함정까지 완벽히 정복하세요.' +
             '</p>' +
+            '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">' +
+              (nextStage
+                ? '<button type="button" id="btn-hero-continue" class="btn btn-primary btn-lg" style="white-space:normal;max-width:100%;" data-action="open-stage" data-stage-id="' + escapeHtml(nextStage.id) + '">' + nextCtaLabel + '</button>'
+                : '') +
+              '<button type="button" id="btn-hero-lab" class="btn btn-secondary btn-lg" style="white-space:normal;max-width:100%;" data-action="open-lab" data-lab-tab="' + escapeHtml((nextStage && nextStage.recommendedLabTab) || 'poly-sim') + '">' +
+                '🔬 시각 수학 실험실' +
+              '</button>' +
+              (reviewStats.activeCount > 0
+                ? '<button type="button" class="btn btn-accent" style="white-space:normal;max-width:100%;" data-action="go-review">🧠 긴급 오답 ' + reviewStats.activeCount + '문항 격파</button>'
+                : '<button type="button" class="btn btn-ghost" style="white-space:normal;max-width:100%;border:1px solid var(--border-strong);" data-action="hero-mock-exam">🎲 실전 모의고사 10제</button>') +
+            '</div>' +
           '</div>' +
 
-          '<div style="padding:14px 16px;border-radius:var(--radius-md);background:var(--bg-subtle);border:1px solid var(--border-card);">' +
+          '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,275px),1fr));gap:10px;">' +
+            '<button type="button" data-action="go-formula-deck" style="padding:12px 14px;border-radius:14px;background:var(--bg-muted);border:1px solid var(--border-card);text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0;">' +
+              '<div style="font-size:0.87rem;font-weight:800;color:var(--text-indigo);">💡 파인만 직관 &amp; 45개 스텔스 공식</div>' +
+              '<div style="font-size:0.79rem;color:var(--ink-secondary);line-height:1.5;">빈칸 추론으로 3분 만에 핵심 공식 총정리 →</div>' +
+            '</button>' +
+            '<button type="button" data-action="open-stage-logic" data-stage-id="' + escapeHtml((nextStage && nextStage.id) || 'ch1-s1') + '" style="padding:12px 14px;border-radius:14px;background:var(--bg-muted);border:1px solid var(--border-card);text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0;">' +
+              '<div style="font-size:0.87rem;font-weight:800;color:var(--text-emerald);">🔗 15개 4단계 논리 체인 조립</div>' +
+              '<div style="font-size:0.79rem;color:var(--ink-secondary);line-height:1.5;">증명·유도 순서를 직접 끼워 맞추며 원리 체화 →</div>' +
+            '</button>' +
+            '<button type="button" data-action="open-lab" data-lab-tab="quadratic-explorer" style="padding:12px 14px;border-radius:14px;background:var(--bg-muted);border:1px solid var(--border-card);text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0;">' +
+              '<div style="font-size:0.87rem;font-weight:800;color:var(--text-sky);">🔬 4종 실시간 시각 수학 실험실</div>' +
+              '<div style="font-size:0.79rem;color:var(--ink-secondary);line-height:1.5;">곱셈블록·조립제법·복소평면·이차함수 탐색 →</div>' +
+            '</button>' +
+            '<button type="button" data-action="go-review" style="padding:12px 14px;border-radius:14px;background:var(--bg-muted);border:1px solid var(--border-card);text-align:left;display:flex;flex-direction:column;gap:4px;min-width:0;">' +
+              '<div style="font-size:0.87rem;font-weight:800;color:var(--text-rose);">⚔️ 105제 3-Wave 배틀 &amp; 라이트너 복습</div>' +
+              '<div style="font-size:0.79rem;color:var(--ink-secondary);line-height:1.5;">O/X 함정·보스전과 Box 0~3 스마트 오답 승급 →</div>' +
+            '</button>' +
+          '</div>' +
+
+          '<div style="display:flex;flex-direction:column;gap:8px;">' +
+            '<div style="font-size:0.79rem;font-weight:800;color:var(--ink-tertiary);">⚡ 5대 중단원 바로가기</div>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + chapterJumpPillsHtml + '</div>' +
+          '</div>' +
+
+          '<div style="padding:13px 16px;border-radius:var(--radius-md);background:var(--bg-subtle);border:1px solid var(--border-card);">' +
             '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px;font-size:0.84rem;font-weight:750;">' +
               '<span>⚡ 현재 칭호: Lv.' + lv.level + ' ' + escapeHtml(lv.title) + ' (' + lv.xp + ' XP)</span>' +
               '<span style="color:var(--text-indigo);">다음 레벨까지 ' + Math.max(0, lv.nextLevelCeil - lv.xp) + ' XP</span>' +
@@ -666,18 +710,6 @@
             '<div class="progress-track" aria-label="레벨 경험치 진행률">' +
               '<div class="progress-fill" style="width:' + lv.progressPercent + '%;"></div>' +
             '</div>' +
-          '</div>' +
-
-          '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">' +
-            (nextStage
-              ? '<button type="button" id="btn-hero-continue" class="btn btn-primary btn-lg" style="white-space:normal;max-width:100%;" data-action="open-stage" data-stage-id="' + escapeHtml(nextStage.id) + '">' + nextCtaLabel + '</button>'
-              : '') +
-            '<button type="button" id="btn-hero-lab" class="btn btn-secondary btn-lg" style="white-space:normal;max-width:100%;" data-action="open-lab" data-lab-tab="' + escapeHtml((nextStage && nextStage.recommendedLabTab) || 'poly-sim') + '">' +
-              '🔬 시각 수학 실험실' +
-            '</button>' +
-            (reviewStats.activeCount > 0
-              ? '<button type="button" class="btn btn-accent" style="white-space:normal;max-width:100%;" data-action="go-review">🧠 긴급 오답 ' + reviewStats.activeCount + '문항 격파</button>'
-              : '') +
           '</div>' +
         '</div>' +
 
@@ -1921,6 +1953,33 @@
       if (!stageId) return;
       global.SoundFX.click();
       navigateTo('stage', { stageId: stageId, tab: 'intuition' });
+      return;
+    }
+
+    if (action === 'open-stage-logic') {
+      var logicStageId = actionEl.getAttribute('data-stage-id') || 'ch1-s1';
+      global.SoundFX.click();
+      navigateTo('stage', { stageId: logicStageId, tab: 'logic' });
+      return;
+    }
+
+    if (action === 'hero-mock-exam') {
+      navigateTo('review', { resetMode: true });
+      startRandomMockExam10();
+      return;
+    }
+
+    if (action === 'jump-chapter') {
+      var targetChId = actionEl.getAttribute('data-chapter-id');
+      if (uiState.unitFilter !== 'all') {
+        uiState.unitFilter = 'all';
+        renderDashboardView();
+      }
+      global.SoundFX.click();
+      var chSec = targetChId ? document.querySelector('.chapter-section[data-chapter-id="' + targetChId + '"]') : null;
+      if (chSec && typeof chSec.scrollIntoView === 'function') {
+        chSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       return;
     }
 

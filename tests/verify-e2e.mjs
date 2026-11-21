@@ -309,7 +309,7 @@ async function runSuite() {
     assert(!dashInfo.hasRawDollar, `Raw '$' math leak detected on Dashboard: "${dashInfo.dollarSnippet}"`);
     checksPassed.push('Dashboard renders 5 chapters & 15 stage cards with zero raw $ leaks');
 
-    const shotDash = await cdp.saveScreenshot('01-dashboard-bento.png');
+    const shotDash = await cdp.saveScreenshot('05-dashboard-polished.png');
     if (shotDash) savedScreenshots.push(shotDash);
 
     // -------------------------------------------------------------------------
