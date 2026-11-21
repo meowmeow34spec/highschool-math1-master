@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LOGIC PRISM · 고1 공통수학1 반학기 마스터 — 파인만 직관, 논리 체인 퍼즐, 3-Wave 배틀, 시각 수학 실험실로 완성하는 트렌디 수학 학습 플랫폼">
+  <title>LOGIC PRISM · 고1 공통수학1 반학기 마스터</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234F46E5'/%3E%3Cstop offset='50%25' stop-color='%230EA5E9'/%3E%3Cstop offset='100%25' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpolygon points='32,12 50,46 14,46' fill='none' stroke='%23FFFFFF' stroke-width='4.5' stroke-linejoin='round'/%3E%3Cline x1='32' y1='12' x2='32' y2='46' stroke='%23FFFFFF' stroke-width='3' stroke-opacity='0.75'/%3E%3C/svg%3E">
+
+  <!-- Pretendard Variable & KaTeX 0.16.11 CDN -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+
+  <!-- Design System & Component Styles -->
+  <link rel="stylesheet" href="./src/css/design-system.css">
+  <link rel="stylesheet" href="./src/css/components.css">
+</head>
+<body>
+  <div class="ambient-prism" aria-hidden="true"></div>
+
+  <header id="app-header" class="app-header">
+    <div class="app-header-inner container">
+      <button type="button" id="btn-home" class="brand-btn" data-nav="dashboard" aria-label="LOGIC PRISM 학습 로드맵 홈으로 이동">
+        <span class="brand-prism-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3L21 19H3L12 3Z" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/>
+            <path d="M12 3V19" stroke="currentColor" stroke-width="1.6" stroke-opacity="0.65"/>
+          </svg>
+        </span>
+        <span class="brand-text-group">
+          <span class="brand-title">LOGIC PRISM</span>
+          <span class="brand-subtitle-badge">고1 공통수학1 · 반학기</span>
+        </span>
+      </button>
+
+      <nav class="main-nav" aria-label="주요 메뉴">
+        <button type="button" class="nav-tab is-active" data-nav="dashboard">🗺️ 학습 로드맵</button>
+        <button type="button" class="nav-tab" data-nav="formula-deck">🃏 스텔스 공식장</button>
+        <button type="button" class="nav-tab" data-nav="lab">🔬 시각 수학 실험실</button>
+        <button type="button" class="nav-tab" data-nav="review">🧠 오답 격파 <span id="review-badge" class="nav-badge" hidden>0</span></button>
+      </nav>
+
+      <div class="header-controls">
+        <div class="stat-group" aria-label="학습 현황 요약">
+          <div id="stat-streak" class="stat-pill" title="연속 학습일">🔥 1일</div>
+          <div id="stat-xp" class="stat-pill stat-pill-xp" title="경험치 및 레벨">⚡ Lv.1 · 0 XP</div>
+          <div id="stat-mastery" class="stat-pill" title="마스터한 스테이지">🏆 0 / 15</div>
+        </div>
+        <div class="action-group">
+          <button type="button" id="btn-sound-toggle" class="icon-btn" aria-label="효과음 전환" title="효과음 전환">🔊</button>
+          <button type="button" id="btn-theme-toggle" class="icon-btn" aria-label="테마 전환" title="다크/라이트 모드">🌙</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="app-main" class="app-main container">
+    <section id="view-dashboard" class="app-view is-active" data-view="dashboard"></section>
+    <section id="view-stage" class="app-view" data-view="stage" hidden></section>
+    <section id="view-formula-deck" class="app-view" data-view="formula-deck" hidden></section>
+    <section id="view-lab" class="app-view" data-view="lab" hidden><div id="visual-lab-root"></div></section>
+    <section id="view-review" class="app-view" data-view="review" hidden></section>
+  </main>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+  <div id="modal-container" class="modal-container" hidden></div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="./src/js/math-render.js"></script>
+  <script defer src="./src/data/chapters-alg.js"></script>
+  <script defer src="./src/data/chapters-eq.js"></script>
+  <script defer src="./src/data/curriculum-index.js"></script>
+  <script defer src="./src/js/learning-state.js"></script>
+  <script defer src="./src/js/visual-lab.js"></script>
+  <script defer src="./src/js/app-controller.js"></script>
+</body>
+</html>
